@@ -403,6 +403,15 @@ $.extend(fixmystreet.set_up, {
                 $category_meta.empty();
             }
         });
+
+        if ($(this).data('role') == 'inspector') {
+            var title = args.category + ' problem has been scheduled for fixing';
+            var description = args.category + ' problem found - scheduled for fixing by ' + $(this).data('body');
+
+            $('#form_title').val(title);
+            $('#form_detail').val(description);
+        }
+
     });
   },
 
