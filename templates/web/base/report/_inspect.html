@@ -68,7 +68,7 @@
             <select id="defect_type" name="defect_type" class="form-control">
               <option value=""[% ' selected' IF NOT problem.defect_type %]>-</option>
               [% FOREACH defect_type IN problem.defect_types %]
-                <option[% ' selected' IF problem.defect_type == defect_type %] value="[% defect_type.id %]">[% defect_type_format() %]</option>
+                <option[% ' selected' IF problem.defect_type_id == defect_type.id %] value="[% defect_type.id %]">[% defect_type_format() %]</option>
               [% END %]
             </select>
           </p>
