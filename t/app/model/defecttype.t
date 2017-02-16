@@ -47,6 +47,18 @@ subtest 'for_bodies returns correct results' => sub {
     is $defect_types->first->name, $general_defect_type->name, 'Correct defect type is returned for Traffic lights category';
 };
 
+subtest 'Problem->defect_types behaves correctly' => sub {
+    my ($problem) = $mech->create_problems_for_body(1, $oxfordshire->id, 'Test', {
+        category => 'Potholes',
+    });
+
+    is $problem->defect_types->count, 2, 'Both defect types are available for the problem';
+
+    $problem->update({ category => 'Traffic lights' });
+    is $problem->defect_types->count, 1, 'Only 1 defect type is included for Traffic lights category';
+    is $problem->defect_types->first->name, $general_defect_type->name, 'Correct defect type is returned for Traffic lights category';
+};
+
 
 END {
     $mech->delete_body( $oxfordshire );
