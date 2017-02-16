@@ -142,8 +142,11 @@ sub download : Path('download') : Args(0) {
             my ($eastings, $northings) = $report->local_coords;
             my $description = sprintf("%s %s", $report->external_id || "", $report->get_extra_metadata('detailed_information') || "");
             my $activity_code = $report->defect_type ?
-                              $report->defect_type->get_extra_metadata('activity_code')
-                              : 'MC';
+                $report->defect_type->get_extra_metadata('activity_code')
+                : 'MC';
+            my $traffic_information = $report->get_extra_metadata('traffic_information') ?
+                'TM ' . $report->get_extra_metadata('traffic_information')
+                : 'TM none';
 
             $csv->combine(
                 "I", # beginning of defect record
@@ -153,7 +156,7 @@ sub download : Path('download') : Args(0) {
                 "${eastings}E ${northings}N", # defect location field, which we don't capture from inspectors
                 $report->inspection_log_entry->whenedited->strftime("%H%M"), # defect time raised
                 "","","","","","","", # empty fields
-                $report->get_extra_metadata('traffic_information') ? 'TM required' : 'TM none', # further description
+                $traffic_information,
                 $description, # defect description
             );
             push @body, $csv->string;
