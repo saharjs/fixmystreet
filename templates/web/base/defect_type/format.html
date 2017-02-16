@@ -5,5 +5,5 @@
 # to the user in the inspect form.
 ~%]
 [% MACRO defect_type_format BLOCK ~%]
-[%~ defect_type.name ~%]
+[%~ defect_type.name | html ~%]
 [%~ END %]
