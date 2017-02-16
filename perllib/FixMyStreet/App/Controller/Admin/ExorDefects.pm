@@ -141,9 +141,13 @@ sub download : Path('download') : Args(0) {
         foreach my $report (@$inspections) {
             my ($eastings, $northings) = $report->local_coords;
             my $description = sprintf("%s %s", $report->external_id || "", $report->get_extra_metadata('detailed_information') || "");
+            my $activity_code = $report->defect_type ?
+                              $report->defect_type->get_extra_metadata('activity_code')
+                              : 'MC';
+
             $csv->combine(
                 "I", # beginning of defect record
-                "MC", # activity code - minor carriageway, also FC (footway)
+                $activity_code, # activity code - minor carriageway, also FC (footway)
                 "", # empty field, can also be A (seen on MC) or B (seen on FC)
                 sprintf("%03d", ++$i), # randomised sequence number
                 "${eastings}E ${northings}N", # defect location field, which we don't capture from inspectors
@@ -154,9 +158,12 @@ sub download : Path('download') : Args(0) {
             );
             push @body, $csv->string;
 
+            my $defect_type = $report->defect_type ?
+                              $report->defect_type->get_extra_metadata('defect_code')
+                              : 'SFP2';
             $csv->combine(
                 "J", # georeferencing record
-                $report->get_extra_metadata('defect_type') || 'SFP2', # defect type - SFP2: sweep and fill <1m2, POT2 also seen
+                $defect_type, # defect type - SFP2: sweep and fill <1m2, POT2 also seen
                 $report->response_priority ?
                     $report->response_priority->external_id :
                     "2", # priority of defect
