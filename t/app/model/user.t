@@ -30,6 +30,21 @@ is $problem->user->latest_anonymity, 0, "User's last update was not anonyous";
 create_update($problem, anonymous => 't');
 is $problem->user->latest_anonymity, 1, "User's last update was anonymous";
 
+my $user = $problem->user;
+my $body = $mech->create_body_ok(2237, 'Oxfordshire');
+$user->update({ from_body => $body });
+
+is $user->is_inspector, 0, "User is not inspector by default";
+
+$user->user_body_permissions->find_or_create({
+    body => $body,
+    permission_type => 'planned_reports',
+});
+
+$user->discard_changes;
+
+is $user->is_inspector, 1, "is_inspector returns 1 for user with planned_reports permissions";
+
 FixMyStreet::override_config {
     ALLOWED_COBRANDS => [ { fixmystreet => '.' } ],
     MAPIT_URL => 'http://mapit.mysociety.org/',

@@ -6,7 +6,7 @@
     [%~ INCLUDE navitem uri='/auth' label=loc('Sign in') ~%]
 [%~ END ~%]
 
-[%~ IF c.user_exists AND c.user.has_body_permission_to('planned_reports') ~%]
+[%~ IF c.user_exists AND c.user.is_inspector ~%]
     [%~ INCLUDE navitem uri='/my/planned' label=loc('Shortlist') ~%]
 [%~ END ~%]
 

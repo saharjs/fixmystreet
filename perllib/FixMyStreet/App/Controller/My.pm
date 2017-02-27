@@ -50,7 +50,7 @@ sub planned : Local : Args(0) {
     $c->forward('/auth/get_csrf_token');
 
     $c->detach('/page_error_403_access_denied', [])
-        unless $c->user->has_body_permission_to('planned_reports');
+        unless $c->user->is_inspector;
 
     $c->stash->{problems_rs} = $c->user->active_planned_reports;
     $c->forward('planned_reorder');
