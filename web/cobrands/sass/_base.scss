@@ -1466,6 +1466,19 @@ html.js #map .noscript {
   top: 44px;
 }
 
+#fms_shortlist_all {
+  position: absolute;
+  cursor: pointer;
+  padding: 4px 7px;
+  border-radius: 7px;
+  top: 10px;
+  left: 10px;
+  background: #000;
+  opacity: 0.8;
+  color: #fff;
+  font-size: 0.8em;
+}
+
 //hide pins, show old reports etc
 #sub_map_links {
   position: absolute;

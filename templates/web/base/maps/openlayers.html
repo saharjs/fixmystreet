@@ -36,3 +36,6 @@
     <div id="loading-indicator" class="hidden" aria-hidden="true">
         <img src="/i/loading.svg" alt="Loading..." />
     </div>
+    [% IF c.user && c.user.has_body_permission_to('planned_reports') %]
+    <div id="fms_shortlist_all" class="hidden">Shortlist all visible</div>
+    [% END %]
