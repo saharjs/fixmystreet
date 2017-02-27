@@ -60,9 +60,9 @@ $mech->content_contains('shortlist-down');
 subtest "POSTing multiple problems to my/planned/change adds all to shortlist" => sub {
     my ($problem1, $problem2, $problem3) = $mech->create_problems_for_body(3, $body->id, 'New Problem');
 
-    # Grab CSRF token 
+    # Grab CSRF token
     $mech->get_ok($problem1->url);
-    my ($csrf) = $mech->content =~ /name="token" value="([^"]*)"/;
+    my ($csrf) = $mech->content =~ /meta content="([^"]*)" name="csrf-token"/;
 
     $mech->post_ok( '/my/planned/change_multiple', {
             'ids[]' => [
