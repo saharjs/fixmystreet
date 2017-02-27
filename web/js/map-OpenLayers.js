@@ -120,11 +120,27 @@ var fixmystreet = fixmystreet || {};
         if (fixmystreet.page == "reports") {
           if (fixmystreet.map.getZoom() >= 14) {
             $shortlistButton.removeClass('hidden');
+            $shortlistButton.on('click', function() {
+              var features = [];
+              var csrf = $('meta[name="csrf-token"]').attr('content');
+
+              for (var i = 0; i < fixmystreet.markers.features.length; i++) {
+                var feature = fixmystreet.markers.features[i];
+                if (feature.onScreen()) {
+                  features.push(feature.data.id);
+                }
+              }
+
+              $.post( "/my/planned/change_multiple", { ids: features, token: csrf }, function() {
+                $shortlistButton.addClass('hidden');
+              });
+            });
           } else {
             $shortlistButton.addClass('hidden');
           }
         }
       },
+
       get_marker_by_id: function(problem_id) {
         return fixmystreet.markers.getFeaturesByAttribute('id', problem_id)[0];
       },
