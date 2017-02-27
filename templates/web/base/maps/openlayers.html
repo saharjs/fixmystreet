@@ -33,4 +33,6 @@
     [% IF map.copyright %]
     <div class="olControlAttribution" style="position: absolute;">[% map.copyright %]</div>
     [% END %]
-
+    [% IF c.user && c.user.has_body_permission_to('planned_reports') %]
+    <div id="fms_shortlist_all" class="hidden">Shortlist all visible</div>
+    [% END %]

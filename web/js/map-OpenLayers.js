@@ -115,6 +115,16 @@ var fixmystreet = fixmystreet || {};
         fixmystreet.markers.redraw();
       },
 
+      show_shortlist_control: function() {
+        var $shortlistButton = $('#fms_shortlist_all');
+        if (fixmystreet.page == "reports") {
+          if (fixmystreet.map.getZoom() >= 14) {
+            $shortlistButton.removeClass('hidden');
+          } else {
+            $shortlistButton.addClass('hidden');
+          }
+        }
+      },
       get_marker_by_id: function(problem_id) {
         return fixmystreet.markers.getFeaturesByAttribute('id', problem_id)[0];
       },
@@ -524,6 +534,7 @@ var fixmystreet = fixmystreet || {};
             fixmystreet.map.addControl( fixmystreet.select_feature );
             fixmystreet.select_feature.activate();
             fixmystreet.map.events.register( 'zoomend', null, fixmystreet.maps.markers_resize );
+            fixmystreet.map.events.register( 'zoomend', null, fixmystreet.maps.show_shortlist_control );
 
             // Set up the event handlers to populate the filters and react to them changing
             $("#filter_categories").on("change.filters", categories_or_status_changed);
