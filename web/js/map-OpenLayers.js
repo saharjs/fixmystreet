@@ -117,27 +117,26 @@ var fixmystreet = fixmystreet || {};
 
       show_shortlist_control: function() {
         var $shortlistButton = $('#fms_shortlist_all');
-        if (fixmystreet.page == "reports") {
-          if (fixmystreet.map.getZoom() >= 14) {
-            $shortlistButton.removeClass('hidden');
-            $shortlistButton.on('click', function() {
-              var features = [];
-              var csrf = $('meta[name="csrf-token"]').attr('content');
+        if ($shortlistButton === undefined || fixmystreet.page != "reports" ) return;
+        if (fixmystreet.map.getZoom() >= 14) {
+          $shortlistButton.removeClass('hidden');
+          $shortlistButton.on('click', function() {
+            var features = [];
+            var csrf = $('meta[name="csrf-token"]').attr('content');
 
-              for (var i = 0; i < fixmystreet.markers.features.length; i++) {
-                var feature = fixmystreet.markers.features[i];
-                if (feature.onScreen()) {
-                  features.push(feature.data.id);
-                }
+            for (var i = 0; i < fixmystreet.markers.features.length; i++) {
+              var feature = fixmystreet.markers.features[i];
+              if (feature.onScreen()) {
+                features.push(feature.data.id);
               }
+            }
 
-              $.post( "/my/planned/change_multiple", { ids: features, token: csrf }, function() {
-                $shortlistButton.addClass('hidden');
-              });
+            $.post( "/my/planned/change_multiple", { ids: features, token: csrf }, function() {
+              $shortlistButton.addClass('hidden');
             });
-          } else {
-            $shortlistButton.addClass('hidden');
-          }
+          });
+        } else {
+          $shortlistButton.addClass('hidden');
         }
       },
 
