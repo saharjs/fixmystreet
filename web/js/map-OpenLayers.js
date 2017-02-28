@@ -133,6 +133,22 @@ var fixmystreet = fixmystreet || {};
 
             $.post( "/my/planned/change_multiple", { ids: features, token: csrf }, function() {
               $shortlistButton.addClass('hidden');
+              var $itemList = $('.item-list');
+              $('.shortlisted-status').remove();
+
+              for (var i = 0; i < features.length; i++) {
+                var problemId = features[i],
+                    $form = $itemList.find('#report-'+ problemId + ' form'),
+                    $submit = $form.find("input[type='submit']" );
+
+                $submit.attr('name', 'shortlist-remove')
+                       .attr('aria-label', $submit.data('label-remove'))
+                       .removeClass('item-list__item__shortlist-add')
+                       .addClass('item-list__item__shortlist-remove');
+
+                $(document).trigger('shortlist-add', problemId);
+              }
+
             });
           });
         } else {
