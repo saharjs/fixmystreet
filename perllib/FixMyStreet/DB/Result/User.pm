@@ -327,11 +327,6 @@ sub admin_user_body_permissions {
     });
 }
 
-sub is_inspector {
-    my $self = shift;
-    return $self->has_body_permission_to('planned_reports');
-}
-
 sub contributing_as {
     my ($self, $other, $c, $bodies) = @_;
     $bodies = [ keys %$bodies ] if ref $bodies eq 'HASH';

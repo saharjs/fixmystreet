@@ -444,7 +444,7 @@ sub inspect : Private {
             }
 
             # Or if inspector, redirect back to shortlist
-            if ($c->user->is_inspector) {
+            if ($c->user->has_body_permission_to('planned_reports')) {
                 $redirect_uri = $c->uri_for_action('my/planned');
             }
 
