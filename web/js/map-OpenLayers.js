@@ -115,6 +115,37 @@ var fixmystreet = fixmystreet || {};
         fixmystreet.markers.redraw();
       },
 
+      shortlist_multiple: function(ids, token, callback) {
+        $.post("/my/planned/change_multiple", { ids: ids, token: token })
+        .done(function() {
+          var $itemList = $('.item-list');
+          $('.shortlisted-status').remove();
+
+          for (var i = 0; i < ids.length; i++) {
+            var problemId = ids[i],
+                $form = $itemList.find('#report-'+ problemId + ' form'),
+                $submit = $form.find("input[type='submit']" );
+
+            $submit.attr('name', 'shortlist-remove')
+                   .attr('aria-label', $submit.data('label-remove'))
+                   .removeClass('item-list__item__shortlist-add')
+                   .addClass('item-list__item__shortlist-remove');
+
+            $(document).trigger('shortlist-add', problemId);
+            callback();
+          }
+        })
+        .fail(function(response) {
+          if (response.status == 400) {
+            // If the response is 400, then get a new CSRF token and retry
+            var csrf = response.responseText.match(/name="token" value="([^"]*)"/)[1];
+            fixmystreet.maps.shortlist_multiple(ids, csrf);
+          } else {
+            alert("We appear to be having problems. Please try again later.")
+          }
+        });
+      },
+
       show_shortlist_control: function() {
         var $shortlistButton = $('#fms_shortlist_all');
         if ($shortlistButton === undefined || fixmystreet.page != "reports" ) return;
@@ -131,24 +162,8 @@ var fixmystreet = fixmystreet || {};
               }
             }
 
-            $.post( "/my/planned/change_multiple", { ids: features, token: csrf }, function() {
+            fixmystreet.maps.shortlist_multiple(features, csrf, function() {
               $shortlistButton.addClass('hidden');
-              var $itemList = $('.item-list');
-              $('.shortlisted-status').remove();
-
-              for (var i = 0; i < features.length; i++) {
-                var problemId = features[i],
-                    $form = $itemList.find('#report-'+ problemId + ' form'),
-                    $submit = $form.find("input[type='submit']" );
-
-                $submit.attr('name', 'shortlist-remove')
-                       .attr('aria-label', $submit.data('label-remove'))
-                       .removeClass('item-list__item__shortlist-add')
-                       .addClass('item-list__item__shortlist-remove');
-
-                $(document).trigger('shortlist-add', problemId);
-              }
-
             });
           });
         } else {
