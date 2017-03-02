@@ -417,7 +417,7 @@ if ($('#offline_list').length) {
 
     $(document).on('shortlist-all', function(e, args) {
       fixmystreet.cachet.cacheReports(args.items);
-    })
+    });
 
     $(document).on('shortlist-remove', function(e, id) {
         fixmystreet.offline.removeReports(['/report/' + id]);
