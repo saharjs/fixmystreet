@@ -118,22 +118,29 @@ var fixmystreet = fixmystreet || {};
       shortlist_multiple: function(ids, token, callback) {
         $.post("/my/planned/change_multiple", { ids: ids, token: token })
         .done(function() {
-          var $itemList = $('.item-list');
+          var $itemList = $('.item-list'),
+              items = [];
           $('.shortlisted-status').remove();
 
           for (var i = 0; i < ids.length; i++) {
             var problemId = ids[i],
-                $form = $itemList.find('#report-'+ problemId + ' form'),
+                $item = $itemList.find('#report-'+ problemId)
+                $form = $item.find('form'),
                 $submit = $form.find("input[type='submit']" );
+
+            $item.attr('data-lastupdate', new Date().toISOString());
 
             $submit.attr('name', 'shortlist-remove')
                    .attr('aria-label', $submit.data('label-remove'))
                    .removeClass('item-list__item__shortlist-add')
                    .addClass('item-list__item__shortlist-remove');
-
-            $(document).trigger('shortlist-add', problemId);
+            items.push({
+              'url': '/report/' + $item.data('report-id'),
+              'lastupdate': $item.data('lastupdate')
+            });
             callback();
           }
+          $(document).trigger('shortlist-all', { items: items});
         })
         .fail(function(response) {
           if (response.status == 400) {
@@ -149,6 +156,7 @@ var fixmystreet = fixmystreet || {};
       show_shortlist_control: function() {
         var $shortlistButton = $('#fms_shortlist_all');
         if ($shortlistButton === undefined || fixmystreet.page != "reports" ) return;
+
         if (fixmystreet.map.getZoom() >= 14) {
           $shortlistButton.removeClass('hidden');
           $shortlistButton.on('click', function() {
