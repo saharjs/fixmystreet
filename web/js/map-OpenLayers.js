@@ -115,7 +115,7 @@ var fixmystreet = fixmystreet || {};
         fixmystreet.markers.redraw();
       },
 
-      shortlist_multiple: function(ids, token, callback) {
+      shortlist_multiple: function(ids, token) {
         $.post("/my/planned/change_multiple", { ids: ids, token: token })
         .done(function() {
           var $itemList = $('.item-list'),
@@ -138,7 +138,6 @@ var fixmystreet = fixmystreet || {};
               'url': '/report/' + $item.data('report-id'),
               'lastupdate': $item.data('lastupdate')
             });
-            callback();
           }
           $(document).trigger('shortlist-all', { items: items});
         })
@@ -170,9 +169,7 @@ var fixmystreet = fixmystreet || {};
               }
             }
 
-            fixmystreet.maps.shortlist_multiple(features, csrf, function() {
-              $shortlistButton.addClass('hidden');
-            });
+            fixmystreet.maps.shortlist_multiple(features, csrf);
           });
         } else {
           $shortlistButton.addClass('hidden');
