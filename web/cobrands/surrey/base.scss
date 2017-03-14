@@ -12,7 +12,7 @@
 /* Use a Surrey logo, not-absolutely positioned so we can just
    assume it will fill up the right space and look okay. */
 
-body.frontpage #site-logo, #site-logo {
+#site-logo {
     background: url("/cobrands/surrey/logo.png") 0 0 no-repeat;
     background-size: auto 100%;
     width: 54px;
