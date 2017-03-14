@@ -1,0 +1,68 @@
+@import "_colours";
+@import "../sass/layout";
+
+.big-green-banner {
+  text-transform: none;
+}
+
+/* We can go with the flow in the header and use that for background, no
+ * need to use nav-wrapper-2 */
+#site-header {
+    background-color: $map_nav_bg;
+}
+
+body.mappage .nav-wrapper .nav-wrapper-2 {
+    background: none;
+}
+
+.nav-wrapper .nav-wrapper-2 {
+    border-top: none;
+}
+
+body.frontpage #site-header {
+    height: auto;
+}
+
+/* The map is fixed to start at 4em from the top, so needs a slightly
+ * smaller padding */
+body.mappage #site-header {
+    padding: 7px 0;
+}
+
+/* layout SCSS changes these 'back', reset them again */
+
+#site-logo {
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+body.mappage #site-logo {
+    left: 0;
+}
+
+body.frontpage #site-logo {
+    background: url("/cobrands/surrey/logo.png") 0 0 no-repeat;
+    width: 54px;
+    height: 50px;
+}
+
+/* Make this abs. pos. nav appear in the middle */
+#main-nav {
+    margin-top: 0.8em;
+}
+
+/* The menu can be treated the same on all pages, no map page difference */
+.nav-menu--main a.report-a-problem-btn {
+    padding: 0.75em;
+    margin: 0;
+}
+body.mappage {
+    .nav-menu--main a, .nav-menu--main span {
+        padding: 0.75em;
+    }
+    .nav-menu--main a.report-a-problem-btn {
+        padding: 0.75em;
+        margin: 0;
+    }
+}
