@@ -1,0 +1,34 @@
+@import "../sass/h5bp";
+@import "./_colours";
+@import "../sass/mixins";
+@import "../sass/base";
+
+/* Hide the mySociety logo */
+
+.nav-menu--mysoc {
+  display: none;
+}
+
+/* Use a Surrey logo, not-absolutely positioned so we can just
+   assume it will fill up the right space and look okay. */
+
+body.frontpage #site-logo, #site-logo {
+    background: url("/cobrands/surrey/logo.png") 0 0 no-repeat;
+    background-size: auto 100%;
+    width: 54px;
+    height: 50px;
+    position: static;
+    margin-left: 20px;
+}
+
+/* Get rid of default gradient, border, heights, padding, all unnecessary */
+#site-header {
+    background: #000;
+    border-top: none;
+    height: auto;
+    padding: 10px 0;
+}
+#site-header .container {
+    min-height: 0;
+    padding-bottom: 0;
+}
