@@ -349,7 +349,6 @@ $.extend(fixmystreet.maps, {
     .done(function() {
       var $itemList = $('.item-list'),
           items = [];
-      $('.shortlisted-status').remove();
 
       for (var i = 0; i < ids.length; i++) {
         var problemId = ids[i],
