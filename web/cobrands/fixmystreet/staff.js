@@ -105,7 +105,7 @@ $.extend(fixmystreet.set_up, {
           var parts = whatUserWants.split('-');
           whatUserWants = parts[0] + '-' + parts[1];
           report_id = parts[2];
-          var token = $('meta[name="csrf-token"]').attr('content');;
+          var token = $('meta[name="csrf-token"]').attr('content');
           data = whatUserWants + '=1&token=' + token + '&id=' + report_id;
       } else {
           var $form = $(this).parents('form');
@@ -341,7 +341,7 @@ $.extend(fixmystreet.set_up, {
   }
 });
 
-fixmystreet.maps = fixmystreet.maps || {}
+fixmystreet.maps = fixmystreet.maps || {};
 
 $.extend(fixmystreet.maps, {
   shortlist_multiple: function(ids, token, count) {
@@ -353,7 +353,7 @@ $.extend(fixmystreet.maps, {
 
       for (var i = 0; i < ids.length; i++) {
         var problemId = ids[i],
-            $item = $itemList.find('#report-'+ problemId)
+            $item = $itemList.find('#report-'+ problemId),
             $form = $item.find('form'),
             $submit = $form.find("input[type='submit']" );
 
@@ -374,14 +374,16 @@ $.extend(fixmystreet.maps, {
         var csrf = response.responseText.match(/content="([^"]*)" name="csrf-token"/)[1];
         fixmystreet.maps.shortlist_multiple(ids, csrf, retryCount + 1);
       } else {
-        alert("We appear to be having problems. Please try again later.")
+        alert("We appear to be having problems. Please try again later.");
       }
     });
   },
 
   show_shortlist_control: function() {
     var $shortlistButton = $('#fms_shortlist_all');
-    if ($shortlistButton === undefined || fixmystreet.page != "reports" ) return;
+    if ($shortlistButton === undefined || fixmystreet.page != "reports" ) {
+      return;
+    }
 
     if (fixmystreet.map.getZoom() >= 14) {
       $shortlistButton.removeClass('hidden');
@@ -401,5 +403,5 @@ $.extend(fixmystreet.maps, {
     } else {
       $shortlistButton.addClass('hidden');
     }
-  },
-})
+  }
+});
