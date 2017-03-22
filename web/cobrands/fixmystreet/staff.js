@@ -105,7 +105,7 @@ $.extend(fixmystreet.set_up, {
           var parts = whatUserWants.split('-');
           whatUserWants = parts[0] + '-' + parts[1];
           report_id = parts[2];
-          var token = $('[name=token]').val();
+          var token = $('meta[name="csrf-token"]').attr('content');;
           data = whatUserWants + '=1&token=' + token + '&id=' + report_id;
       } else {
           var $form = $(this).parents('form');
@@ -371,7 +371,7 @@ $.extend(fixmystreet.maps, {
     .fail(function(response) {
       if (response.status == 400 && retryCount < 4) {
         // If the response is 400, then get a new CSRF token and retry
-        var csrf = response.responseText.match(/name="token" value="([^"]*)"/)[1];
+        var csrf = response.responseText.match(/content="([^"]*)" name="csrf-token"/)[1];
         fixmystreet.maps.shortlist_multiple(ids, csrf, retryCount + 1);
       } else {
         alert("We appear to be having problems. Please try again later.")
