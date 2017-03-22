@@ -1,3 +1,12 @@
+function toggle_shortlist (btn, sw, id) {
+  btn.attr('class', 'item-list__item__shortlist-' + sw);
+  btn.attr('title', btn.data('label-' + sw));
+  if (id) {
+      sw += '-' + id;
+  }
+  btn.attr('name', 'shortlist-' + sw);
+}
+
 $.extend(fixmystreet.set_up, {
   manage_duplicates: function() {
       // Deal with changes to report state by inspector/other staff, specifically
@@ -81,15 +90,6 @@ $.extend(fixmystreet.set_up, {
   },
 
   list_item_actions: function() {
-    function toggle_shortlist(btn, sw, id) {
-        btn.attr('class', 'item-list__item__shortlist-' + sw);
-        btn.attr('title', btn.data('label-' + sw));
-        if (id) {
-            sw += '-' + id;
-        }
-        btn.attr('name', 'shortlist-' + sw);
-    }
-
     $('.item-list--reports').on('click', ':submit', function(e) {
       e.preventDefault();
 
@@ -358,10 +358,8 @@ $.extend(fixmystreet.maps, {
 
         $item.attr('data-lastupdate', new Date().toISOString());
 
-        $submit.attr('name', 'shortlist-remove')
-               .attr('aria-label', $submit.data('label-remove'))
-               .removeClass('item-list__item__shortlist-add')
-               .addClass('item-list__item__shortlist-remove');
+        toggle_shortlist($submit, 'remove', problemId);
+
         items.push({
           'url': '/report/' + $item.data('report-id'),
           'lastupdate': $item.data('lastupdate')
