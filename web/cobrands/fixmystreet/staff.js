@@ -344,7 +344,8 @@ $.extend(fixmystreet.set_up, {
 fixmystreet.maps = fixmystreet.maps || {}
 
 $.extend(fixmystreet.maps, {
-  shortlist_multiple: function(ids, token) {
+  shortlist_multiple: function(ids, token, count) {
+    var retryCount = (typeof count !== 'undefined') ?  count : 0;
     $.post("/my/planned/change_multiple", { ids: ids, token: token })
     .done(function() {
       var $itemList = $('.item-list'),
@@ -368,10 +369,10 @@ $.extend(fixmystreet.maps, {
       $(document).trigger('shortlist-all', { items: items});
     })
     .fail(function(response) {
-      if (response.status == 400) {
+      if (response.status == 400 && retryCount < 4) {
         // If the response is 400, then get a new CSRF token and retry
         var csrf = response.responseText.match(/name="token" value="([^"]*)"/)[1];
-        fixmystreet.maps.shortlist_multiple(ids, csrf);
+        fixmystreet.maps.shortlist_multiple(ids, csrf, retryCount + 1);
       } else {
         alert("We appear to be having problems. Please try again later.")
       }
