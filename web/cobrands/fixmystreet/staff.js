@@ -340,3 +340,68 @@ $.extend(fixmystreet.set_up, {
     });
   }
 });
+
+fixmystreet.maps = fixmystreet.maps || {}
+
+$.extend(fixmystreet.maps, {
+  shortlist_multiple: function(ids, token) {
+    $.post("/my/planned/change_multiple", { ids: ids, token: token })
+    .done(function() {
+      var $itemList = $('.item-list'),
+          items = [];
+      $('.shortlisted-status').remove();
+
+      for (var i = 0; i < ids.length; i++) {
+        var problemId = ids[i],
+            $item = $itemList.find('#report-'+ problemId)
+            $form = $item.find('form'),
+            $submit = $form.find("input[type='submit']" );
+
+        $item.attr('data-lastupdate', new Date().toISOString());
+
+        $submit.attr('name', 'shortlist-remove')
+               .attr('aria-label', $submit.data('label-remove'))
+               .removeClass('item-list__item__shortlist-add')
+               .addClass('item-list__item__shortlist-remove');
+        items.push({
+          'url': '/report/' + $item.data('report-id'),
+          'lastupdate': $item.data('lastupdate')
+        });
+      }
+      $(document).trigger('shortlist-all', { items: items});
+    })
+    .fail(function(response) {
+      if (response.status == 400) {
+        // If the response is 400, then get a new CSRF token and retry
+        var csrf = response.responseText.match(/name="token" value="([^"]*)"/)[1];
+        fixmystreet.maps.shortlist_multiple(ids, csrf);
+      } else {
+        alert("We appear to be having problems. Please try again later.")
+      }
+    });
+  },
+
+  show_shortlist_control: function() {
+    var $shortlistButton = $('#fms_shortlist_all');
+    if ($shortlistButton === undefined || fixmystreet.page != "reports" ) return;
+
+    if (fixmystreet.map.getZoom() >= 14) {
+      $shortlistButton.removeClass('hidden');
+      $shortlistButton.on('click', function() {
+        var features = [];
+        var csrf = $('meta[name="csrf-token"]').attr('content');
+
+        for (var i = 0; i < fixmystreet.markers.features.length; i++) {
+          var feature = fixmystreet.markers.features[i];
+          if (feature.onScreen()) {
+            features.push(feature.data.id);
+          }
+        }
+
+        fixmystreet.maps.shortlist_multiple(features, csrf);
+      });
+    } else {
+      $shortlistButton.addClass('hidden');
+    }
+  },
+})
