@@ -337,13 +337,18 @@ body.frontpage .table-cell .content {
 
     li {
       margin: 0 2px;
+
+      @media only screen and (max-width:48em) {
+        float: left;
+        margin-right: 5px;
+      }
     }
 
     li.web-chat {
       float: right;
 
       @media only screen and (max-width:48em) {
-        float: none;
+        float: left;
       }
 
       a {
