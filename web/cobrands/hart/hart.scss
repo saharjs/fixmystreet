@@ -244,18 +244,6 @@ body.frontpage .table-cell .content {
     font-size: 1em;
   }
 
-  .hidden-sm {
-    @media only screen and (max-width:48em) {
-      display: none;
-    }
-  }
-
-  .hidden-lg {
-    @media only screen and (min-width:48em) {
-      display: none;
-    }
-  }
-
   #footer-inner {
     padding: 2em 1.5em;
 
@@ -356,6 +344,16 @@ body.frontpage .table-cell .content {
 
       @media only screen and (max-width:48em) {
         float: none;
+      }
+
+      a {
+        float: left;
+
+        span {
+          float: left;
+          line-height: 50px;
+          margin: 0 10px 0 0;
+        }
       }
     }
 

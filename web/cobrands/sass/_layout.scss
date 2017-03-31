@@ -27,7 +27,7 @@ $mappage-with-actions-sidebar-width: 58em;
     display: block;
 }
 .mob-only {
-    display: none;
+    display: none !important;
 }
 
 body {
