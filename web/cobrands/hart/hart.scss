@@ -245,8 +245,6 @@ body.frontpage .table-cell .content {
   }
 
   #footer-inner {
-    padding: 2em 1.5em;
-
     @media only screen and (max-width:48em) {
       padding: 15px;
     }
@@ -270,8 +268,12 @@ body.frontpage .table-cell .content {
     margin: 0;
   }
 
+  .row {
+    padding: 0 0.5em;
+  }
+
   #footer-row-1 {
-    margin: 0 0 0.5em 0;
+    padding: 1.5em 0 0.5em 0;
 
     @media only screen and (max-width:48em) {
       margin: 0;
@@ -365,6 +367,7 @@ body.frontpage .table-cell .content {
   }
 
   #footer-row-3 {
+    padding: 0 0 1.5em 0;
     margin: 0.5em 0;
   }
 }
